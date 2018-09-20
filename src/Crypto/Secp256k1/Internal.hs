@@ -471,3 +471,12 @@ foreign import ccall
     -> Ptr RecSig65
     -> Ptr Msg32
     -> IO Ret
+
+foreign import ccall
+    "secp256k1_ecdh.h secp256k1_ecdh"
+    ecEcdh
+    :: Ptr Ctx
+    -> Ptr CUChar
+    -> Ptr PubKey64
+    -> Ptr SecKey32
+    -> IO Ret

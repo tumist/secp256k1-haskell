@@ -56,6 +56,9 @@ module Crypto.Secp256k1
     , tweakAddPubKey
     , tweakMulPubKey
     , combinePubKeys
+
+    -- * Diffie Hellman
+    , ecdh
     ) where
 
 import           Control.Monad
@@ -429,6 +432,19 @@ recover (RecSig frg) (Msg fm) = withContext $ \ctx ->
         fp <- mallocForeignPtr
         ret <- withForeignPtr fp $ \pp -> ecdsaRecover ctx pp prg pm
         if isSuccess ret then return $ Just $ PubKey fp else return Nothing
+
+-- | Compute Diffie-Hellman secret.
+ecdh :: PubKey -> SecKey -> ByteString
+ecdh (PubKey rk) (SecKey k) = let z = 32 in
+  withContext $ \ctx -> do
+    withForeignPtr rk $ \rkPtr -> do
+      withForeignPtr k $ \kPtr -> do
+        alloca $ \l -> allocaBytes z $ \o -> do
+          poke l (fromIntegral z)
+          ret <- ecEcdh ctx o rkPtr kPtr
+          unless (isSuccess ret) $ error "error"
+          n <- peek l
+          packByteString (o, n)
 
 instance Arbitrary Msg where
     arbitrary = gen_msg
