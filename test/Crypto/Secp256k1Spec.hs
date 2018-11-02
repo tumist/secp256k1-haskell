@@ -51,6 +51,8 @@ spec = do
         it "add public key" $ property $ tweakAddPubKeyTest
         it "multiply public key" $ property $ tweakMulPubKeyTest
         it "combine public keys" $ property $ combinePubKeyTest
+    describe "ecdh" $ do
+        it "computes dh secret" $ property $ computeDhSecret
 
 isStringPubKey :: (PubKey, Bool) -> Bool
 isStringPubKey (k, c) = k == fromString (cs hex) where
@@ -241,3 +243,16 @@ combinePubKeyTest =
     expected = importPubKey $ fst $ B16.decode $ B8.pack
         "043d9a7ec70011efc23c33a7e62d2ea73cca87797e3b659d93bea6aa871aebde56c3bc\
         \6134ca82e324b0ab9c0e601a6d2933afe7fb5d9f3aae900f5c5dc6e362c8"
+
+computeDhSecret :: Assertion
+computeDhSecret =
+    assertEqual "ecdh computes known secret" expected computed
+  where
+    computed = do
+        pub <- importPubKey $ fst $ B16.decode $ B8.pack
+            "028d7500dd4c12685d1f568b4c2b5048e8534b873319f3a8daa612b469132ec7f7"
+        sec <- secKey $ fst $ B16.decode $ B8.pack
+            "1212121212121212121212121212121212121212121212121212121212121212"
+        pure $ ecdh pub sec
+    expected = Just $ fst $ B16.decode $ B8.pack
+        "1e2fb3c8fe8fb9f262f649f64d26ecf0f2c0a805a767cf02dc2d77a6ef1fdcc3"
