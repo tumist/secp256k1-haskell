@@ -1,4 +1,5 @@
 dist
+dist-newstyle
 cabal-dev
 *.o
 *.hi
@@ -16,4 +17,3 @@ cabal.sandbox.config
 *.hp
 .stack-work
 TAGS
-secp256k1-haskell.cabal
