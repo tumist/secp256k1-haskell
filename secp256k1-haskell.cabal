@@ -1,8 +1,10 @@
 cabal-version: 1.24
 
--- This file has been generated from package.yaml by hpack version 0.34.2.
+-- This file has been generated from package.yaml by hpack version 0.33.0.
 --
 -- see: https://github.com/sol/hpack
+--
+-- hash: 74df88e3eca6c7c160d612a56fcf4cd09e9b29d02c74d41e85eb7a07094ab41d
 
 name:           secp256k1-haskell
 version:        0.5.0

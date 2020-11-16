@@ -434,12 +434,12 @@ tweakNegate (Tweak t) = unsafePerformIO $
 -- | Compute Diffie-Hellman secret.
 ecdh :: PubKey -> SecKey -> ByteString
 ecdh (PubKey rk) (SecKey k) = let z = 32 in
-  withContext $ \ctx -> do
-    withForeignPtr rk $ \rkPtr -> do
-      withForeignPtr k $ \kPtr -> do
+  unsafePerformIO $
+    unsafeUseByteString rk $ \(rkOut,_) -> do
+      unsafeUseByteString k $ \(kOut,_) -> do
         alloca $ \l -> allocaBytes z $ \o -> do
           poke l (fromIntegral z)
-          ret <- ecEcdh ctx o rkPtr kPtr
+          ret <- ecEcdh ctx o rkOut kOut
           unless (isSuccess ret) $ error "error"
           n <- peek l
           packByteString (o, n)

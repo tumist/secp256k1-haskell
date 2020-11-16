@@ -272,7 +272,7 @@ foreign import ccall safe
 foreign import ccall
     "secp256k1_ecdh.h secp256k1_ecdh"
     ecEcdh
-    :: Ptr Ctx
+    :: Ctx
     -> Ptr CUChar
     -> Ptr PubKey64
     -> Ptr SecKey32

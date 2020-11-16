@@ -59,11 +59,11 @@ spec = do
         it "reads tweak from string" $
             property isStringTweak
     describe "tweaks" $ do
-        it "add secret key" $ property $ tweakAddSecKeyTest
-        it "multiply secret key" $ property $ tweakMulSecKeyTest
-        it "add public key" $ property $ tweakAddPubKeyTest
-        it "multiply public key" $ property $ tweakMulPubKeyTest
-        it "combine public keys" $ property $ combinePubKeyTest
+        it "add secret key" $ property tweakAddSecKeyTest
+        it "multiply secret key" $ property tweakMulSecKeyTest
+        it "add public key" $ property tweakAddPubKeyTest
+        it "multiply public key" $ property tweakMulPubKeyTest
+        it "combine public keys" $ property combinePubKeyTest
         it "can't combine 0 public keys" $ property combinePubKeyEmptyListTest
         it "negates tweak" $ property negateTweakTest
     describe "ecdh" $ do
